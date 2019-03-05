@@ -1,7 +1,10 @@
 package fr.epita.quiz.tests;
 
+import java.sql.Connection;
+
 import javax.inject.Inject;
 import javax.inject.Named;
+import javax.sql.DataSource;
 
 import org.junit.Assert;
 import org.junit.Test;
@@ -15,6 +18,10 @@ public class TestDiWithSpring {
 
 	
 	@Inject
+	@Named("dataSource")
+	DataSource ds;
+	
+	@Inject
 	@Named("firstQuery")
 	String text;
 	
@@ -24,6 +31,22 @@ public class TestDiWithSpring {
 		Assert.assertNotNull(text);
 		System.out.println(text);
 		
+		
+		
 	}
+	
+	@Test
+	public void testDS() throws Exception {
+
+		Assert.assertNotNull(ds);
+		Connection connection = ds.getConnection();
+		String schema = connection.getSchema();
+		Assert.assertNotNull(schema);
+		System.out.println(schema);
+		connection.close();
+		
+		
+	}
+
 
 }
