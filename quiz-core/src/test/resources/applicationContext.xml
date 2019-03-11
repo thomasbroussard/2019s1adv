@@ -49,5 +49,7 @@
 			</list>
 		</property>
 	</bean>
+	
+	<bean id="questionDAO" class="fr.epita.quiz.services.dataaccess.QuestionJPADAO" /> 
 
 </beans>

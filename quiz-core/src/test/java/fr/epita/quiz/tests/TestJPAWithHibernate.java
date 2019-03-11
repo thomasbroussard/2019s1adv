@@ -1,6 +1,7 @@
 package fr.epita.quiz.tests;
 
 import java.sql.Connection;
+import java.util.List;
 
 import javax.inject.Inject;
 import javax.inject.Named;
@@ -14,6 +15,7 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import fr.epita.quiz.datamodel.Question;
+import fr.epita.quiz.services.dataaccess.QuestionJPADAO;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration("/applicationContext.xml")
@@ -23,6 +25,9 @@ public class TestJPAWithHibernate {
 	@Inject
 	@Named("sessionFactory")
 	SessionFactory sessionFactory;
+	
+	@Inject
+	QuestionJPADAO dao;
 	
 
 	@Test
@@ -48,6 +53,19 @@ public class TestJPAWithHibernate {
 		
 	}
 	
+	@Test
+	public void testQuestionDAO() throws Exception {
+		Question question = new Question();
+		String expected = "What is Hibernate?";
+		question.setContent(expected);
+		dao.create(question);
+		
+		List<Question> searchResult = dao.search(question);
+		Assert.assertNotEquals(0, searchResult.size());
+
+		
+		
+	}
 	
 
 }
