@@ -62,8 +62,6 @@ public class TestJPAWithHibernate {
 		
 		List<Question> searchResult = dao.search(question);
 		Assert.assertNotEquals(0, searchResult.size());
-
-		
 		
 	}
 	
