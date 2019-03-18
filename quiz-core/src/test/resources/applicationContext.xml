@@ -51,5 +51,7 @@
 	</bean>
 	
 	<bean id="questionDAO" class="fr.epita.quiz.services.dataaccess.QuestionJPADAO" /> 
+	<bean id="choiceDAO" class="fr.epita.quiz.services.dataaccess.ChoiceJPADAO" /> 
+	<bean id="quizDataService" class="fr.epita.quiz.services.dataaccess.QuizDataService" /> 
 
 </beans>

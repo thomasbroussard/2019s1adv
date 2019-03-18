@@ -19,9 +19,22 @@ public abstract class GenericDAO<T>{
 	
 	public void create(T entity) {
 		Session session = sf.openSession();
-		Transaction tx = session.beginTransaction();
-		session.save(entity);
-		tx.commit();
+		Transaction tx = session.getTransaction();
+		boolean isTxExist = false;
+		// if the transaction is not null but not active
+		if (tx != null && !tx.isActive()) {
+			tx.begin();
+		}else if (tx == null) { // it is not existing
+			tx = session.beginTransaction(); // then we create it
+		}else {
+			isTxExist = true; // remember that the tx is already setup by a calling method
+		}
+		session.save(entity);	
+		
+		if (!isTxExist) {
+			tx.commit();	
+		}
+		
 		session.close();
 		
 	}
