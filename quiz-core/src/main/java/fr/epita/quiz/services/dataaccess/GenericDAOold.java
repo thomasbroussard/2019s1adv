@@ -1,5 +1,6 @@
 package fr.epita.quiz.services.dataaccess;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map.Entry;
 
@@ -10,12 +11,10 @@ import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 import org.hibernate.query.Query;
 
-public abstract class GenericDAO<T>{
-
-
-	@Inject
-	protected SessionFactory sf;
+public abstract class GenericDAOold<T> {
 	
+	@Inject
+	private SessionFactory sf;
 	
 	public void create(T entity) {
 		Session session = sf.openSession();
@@ -41,18 +40,21 @@ public abstract class GenericDAO<T>{
 	}
 	
 	
+	
+	
 	public List<T> search(T criteria){
-		QueryHolder<T> holder = new QueryHolder<T>();
-		prepareSearch(criteria, holder);
 		Session session = sf.openSession();
+		QueryHolder<T> holder = new QueryHolder<T>(); 
+				prepareSearch(criteria, holder);
 		Query<T> query = session.createQuery(holder.getQueryString(), holder.getClassName());
 		for(Entry<String,Object> entry : holder.getMap().entrySet()) {
 			query.setParameter(entry.getKey(), entry.getValue());
 		}
-		return query.list();
+		List<T> list = query.list();
+		session.close();
+		return list;
 		
 	}
-	
-	public abstract void prepareSearch(T criteria, QueryHolder<T> holder);
-	
+	protected abstract void prepareSearch(T criteria, QueryHolder<T> holder);
+
 }

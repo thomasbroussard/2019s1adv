@@ -6,12 +6,15 @@ public class QuestionJPADAO extends GenericDAO<Question>{
 	
 
 
-
 	@Override
-	protected void prepareSearch(Question criteria, QueryHolder<Question> holder) {
-		holder.setQueryString("from Question as q where q.content like :content");
+	public void prepareSearch(Question criteria, QueryHolder<Question> holder) {
+		holder.setQueryString("from Question as q where q.content like :content"); 
 		holder.setClassName(Question.class);
-		holder.putParameter("content","%" +  criteria.getContent() + "%");
+		holder.putParameter("content", "%" +  criteria.getContent() + "%");
 	}
+	
+	
+
+
 
 }
