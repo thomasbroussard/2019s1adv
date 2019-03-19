@@ -1,6 +1,7 @@
 package fr.epita.quiz.services.dataaccess;
 
 import javax.inject.Inject;
+import javax.transaction.Transactional;
 
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -20,16 +21,15 @@ public class QuizDataService {
 	@Inject
 	SessionFactory sf;
 	
+	@Transactional(Transactional.TxType.REQUIRED)
 	public void createQuestionAndChoices(Question question, Choice... choices) {
-		Session session = sf.openSession();
-		Transaction currentTx = session.beginTransaction();
 		questionDAO.create(question);
 		for (Choice choice : choices) {
 			choice.setQuestion(question);
 			choiceDAO.create(choice);
 		}
 		
-		currentTx.commit();
+	
 		
 		
 	}
