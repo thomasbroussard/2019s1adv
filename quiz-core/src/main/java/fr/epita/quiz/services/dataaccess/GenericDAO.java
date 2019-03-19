@@ -3,19 +3,25 @@ package fr.epita.quiz.services.dataaccess;
 import java.util.List;
 import java.util.Map.Entry;
 
-import javax.inject.Inject;
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+import javax.persistence.TypedQuery;
 import javax.transaction.Transactional;
 
-import org.hibernate.Session;
-import org.hibernate.SessionFactory;
-import org.hibernate.query.Query;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 public abstract class GenericDAO<T>{
 
-
-	@Inject
-	protected SessionFactory sf;
+	private static final Logger LOGGER = LogManager.getLogger(GenericDAO.class);
 	
+	
+//	@Inject
+//	protected SessionFactory sf;
+//	
+	
+	@PersistenceContext
+	EntityManager em;
 	
 	
 //	private void handleOperation(T entity, BiOperation<Session,T> callback) {
@@ -44,37 +50,40 @@ public abstract class GenericDAO<T>{
 //		handleOperation(entity, biOperation);
 //	}
 	
+	//old way to persist data with session factory
+//	@Transactional(Transactional.TxType.REQUIRED)
+//	public void update(T entity) {
+//		Session session = sf.openSession();
+//		session.update(entity); 
+//		session.close();
+//	}
+	
 	@Transactional(Transactional.TxType.REQUIRED)
 	public void create(T entity) {
-		Session session = sf.openSession();
-		session.save(entity); 
-		session.close();
+		LOGGER.info("entering the create method");
+		em.persist(entity); 
+		LOGGER.info("exiting the create method");
 	}
 	
 	@Transactional(Transactional.TxType.REQUIRED)
 	public void delete(T entity) {
-		Session session = sf.openSession();
-		session.delete(entity); 
-		session.close();
+		em.remove(entity); 
 	}
 	
 	@Transactional(Transactional.TxType.REQUIRED)
 	public void update(T entity) {
-		Session session = sf.openSession();
-		session.update(entity); 
-		session.close();
+		em.merge(entity);
 	}
-	
 	
 	public List<T> search(T criteria){
 		QueryHolder<T> holder = new QueryHolder<T>();
 		prepareSearch(criteria, holder);
-		Session session = sf.openSession();
-		Query<T> query = session.createQuery(holder.getQueryString(), holder.getClassName());
+		
+		TypedQuery<T> query = em.createQuery(holder.getQueryString(), holder.getClassName());
 		for(Entry<String,Object> entry : holder.getMap().entrySet()) {
 			query.setParameter(entry.getKey(), entry.getValue());
 		}
-		return query.list();
+		return query.getResultList();
 		
 	}
 	

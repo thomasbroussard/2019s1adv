@@ -1,6 +1,6 @@
 <beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xmlns:tx="http://www.springframework.org/schema/tx"
-	xmlns:context="http://www.springframework.org/schema/context" xmlns:mvc="http://www.springframework.org/schema/mvc"
+	xmlns:tx="http://www.springframework.org/schema/tx" xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:mvc="http://www.springframework.org/schema/mvc"
 	xsi:schemaLocation="http://www.springframework.org/schema/beans
         http://www.springframework.org/schema/beans/spring-beans.xsd
         http://www.springframework.org/schema/context
@@ -43,7 +43,7 @@
 		</property>
 	</bean>
 
-	<bean id="sessionFactory" class="org.springframework.orm.hibernate5.LocalSessionFactoryBean">
+<!-- 	<bean id="sessionFactory" class="org.springframework.orm.hibernate5.LocalSessionFactoryBean">
 		<property name="dataSource" ref="dataSource" />
 		<property name="hibernateProperties" ref="hibernateProperties" />
 		<property name="packagesToScan">
@@ -51,18 +51,34 @@
 				<value>fr.epita.quiz.datamodel</value>
 			</list>
 		</property>
-	</bean>
+	</bean> -->
 
 	<bean id="questionDAO" class="fr.epita.quiz.services.dataaccess.QuestionJPADAO" />
 	<bean id="choiceDAO" class="fr.epita.quiz.services.dataaccess.ChoiceJPADAO" />
 	<bean id="quizDataService" class="fr.epita.quiz.services.dataaccess.QuizDataService" />
 
-	<!-- <bean id="transactionManager" class="org.springframework.orm.jpa.JpaTransactionManager"> <property name="entityManagerFactory" ref="entityManagerFactory" 
-		/> </bean> -->
-	<bean id="transactionManager" class="org.springframework.orm.hibernate5.HibernateTransactionManager">
+
+
+	<bean id="entityManagerFactory" class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">
 		<property name="dataSource" ref="dataSource" />
-		<property name="sessionFactory" ref="sessionFactory" />
+		<property name="packagesToScan" value="fr.epita.quiz.datamodel" />
+		<property name="jpaVendorAdapter">
+			<bean class="org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter" />
+		</property>
+		<property name="jpaProperties">
+			<props>
+				<prop key="hibernate.hbm2ddl.auto">update</prop>
+				<prop key="hibernate.dialect">org.hibernate.dialect.H2Dialect</prop>
+			</props>
+		</property>
 	</bean>
+
+
+	<bean id="transactionManager" class="org.springframework.orm.jpa.JpaTransactionManager">
+		<property name="entityManagerFactory" ref="entityManagerFactory" />
+	</bean>
+	<!-- <bean id="transactionManager" class="org.springframework.orm.hibernate5.HibernateTransactionManager"> <property name="dataSource" ref="dataSource" 
+		/> <property name="sessionFactory" ref="sessionFactory" /> </bean> -->
 	<tx:annotation-driven />
 
 </beans>
