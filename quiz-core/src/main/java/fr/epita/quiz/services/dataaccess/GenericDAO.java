@@ -1,7 +1,9 @@
 package fr.epita.quiz.services.dataaccess;
 
+import java.io.Serializable;
 import java.util.List;
 import java.util.Map.Entry;
+import java.util.function.BiFunction;
 
 import javax.inject.Inject;
 
@@ -17,7 +19,8 @@ public abstract class GenericDAO<T>{
 	protected SessionFactory sf;
 	
 	
-	public void create(T entity) {
+	
+	private void handleOperation(T entity, BiOperation<Session,T> callback) {
 		Session session = sf.openSession();
 		Transaction tx = session.getTransaction();
 		boolean isTxExist = false;
@@ -29,28 +32,26 @@ public abstract class GenericDAO<T>{
 		}else {
 			isTxExist = true; // remember that the tx is already setup by a calling method
 		}
-		session.save(entity);	
+		callback.trigger(session,entity);
 		
 		if (!isTxExist) {
 			tx.commit();	
 		}
 		
 		session.close();
-		
+	}
+	
+	public void create(T entity) {
+		BiOperation<Session,T> biOperation = (session, e) -> session.save(entity); 
+		handleOperation(entity, biOperation);
 	}
 	public void delete(T entity) {
-		Session session = sf.openSession();
-		Transaction tx = session.beginTransaction();
-		session.delete(entity);
-		tx.commit();
-		session.close();
+		BiOperation<Session,T> biOperation = (session, e) -> session.delete(entity);
+		handleOperation(entity, biOperation);
 	}
 	public void update(T entity) {
-		Session session = sf.openSession();
-		Transaction tx = session.beginTransaction();
-		session.update(entity);
-		tx.commit();
-		session.close();
+		BiOperation<Session,T> biOperation = (session, e) -> session.update(entity);
+		handleOperation(entity, biOperation);
 	}
 	
 	
