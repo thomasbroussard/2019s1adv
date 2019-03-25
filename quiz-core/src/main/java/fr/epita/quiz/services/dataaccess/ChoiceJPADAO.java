@@ -1,7 +1,10 @@
 package fr.epita.quiz.services.dataaccess;
 
+import org.springframework.stereotype.Repository;
+
 import fr.epita.quiz.datamodel.Choice;
 
+@Repository
 public class ChoiceJPADAO extends GenericDAO<Choice> {
  
 	@Override

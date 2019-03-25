@@ -8,10 +8,13 @@ import javax.transaction.Transactional;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.hibernate.SessionFactory;
+import org.springframework.stereotype.Repository;
 
 import fr.epita.quiz.datamodel.Choice;
 import fr.epita.quiz.datamodel.Question;
 
+
+@Repository
 public class QuizDataService {
 	
 	private static final Logger LOGGER = LogManager.getLogger(QuizDataService.class); 

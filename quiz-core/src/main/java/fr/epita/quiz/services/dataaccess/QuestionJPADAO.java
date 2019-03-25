@@ -1,7 +1,11 @@
 package fr.epita.quiz.services.dataaccess;
 
+import org.springframework.stereotype.Repository;
+
 import fr.epita.quiz.datamodel.Question;
 
+
+@Repository
 public class QuestionJPADAO extends GenericDAO<Question>{
 	
 
