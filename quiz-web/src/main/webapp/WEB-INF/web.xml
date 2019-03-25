@@ -10,4 +10,14 @@
 	        org.springframework.web.context.ContextLoaderListener
 	   </listener-class>
 	</listener> 
+	
+<!-- 	<servlet>
+		<servlet-name>QuizServlet</servlet-name>
+		<servlet-class>fr.quiz.web.QuizServlet</servlet-class>
+	</servlet>
+	
+	<servlet-mapping>
+		<servlet-name>QuizServlet</servlet-name>
+		<url-pattern>/quiz</url-pattern>
+	</servlet-mapping> -->
 </web-app>

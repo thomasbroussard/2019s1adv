@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration status="INFO">
+    <Appenders>
+        <Console name="console" target="SYSTEM_OUT">
+            <PatternLayout
+                pattern="%d{yyyyMMdd-HH:mm:ss.SSS} - [%-5level] %c{-10}->%method():%L - %msg%n" />
+        </Console>
+    </Appenders>
+    <Loggers>
+        <Root level="debug" additivity="false">
+            <AppenderRef ref="console" />
+        </Root>
+        <Logger name="org.hibernate" level="info">
+        	<AppenderRef ref="console" />
+        </Logger>
+        <Logger name="org.hibernate.SQL" level="debug">
+        	<AppenderRef ref="console" />
+        </Logger>
+        <Logger name="fr.epita.quiz" level="all">
+        	<AppenderRef ref="console" />
+        </Logger>
+        <Logger name="org.springframework" level="info">
+        	<AppenderRef ref="console" />
+        </Logger>
+    </Loggers>
+</Configuration>

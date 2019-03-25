@@ -14,6 +14,8 @@ import javax.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor;
 import org.springframework.web.context.support.SpringBeanAutowiringSupport;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 import fr.epita.quiz.datamodel.Question;
 import fr.epita.quiz.services.dataaccess.QuestionJPADAO;
 import fr.epita.quiz.services.dataaccess.QuizDataService;
@@ -36,8 +38,13 @@ public class QuizServlet extends HttpServlet {
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		
-		List<Question> list = questionDAO.search(new Question());
-		resp.getWriter().println("hello, you have this list of questions : " + list);
+		Question criteria = new Question();
+		criteria.setContent("");
+		ObjectMapper objectMapper = new ObjectMapper();
+
+		List<Question> list = questionDAO.search(criteria);
+		String listAsJSON = objectMapper.writer().writeValueAsString(list);
+		resp.getWriter().println(listAsJSON);
 	}
 
 
