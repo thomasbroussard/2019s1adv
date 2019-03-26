@@ -1,0 +1,86 @@
+{
+	"info": {
+		"_postman_id": "f273d715-974c-4aac-9f04-ce6c2828423b",
+		"name": "questions@localhost",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "http://localhost:8080/quiz-rest-services/rest/questions?s=Java",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": " {\n        \"id\": 1,\n        \"content\": \"What is Java?\"\n }"
+				},
+				"url": {
+					"raw": "http://localhost:8080/quiz-rest-services/rest/questions?s=Java",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"quiz-rest-services",
+						"rest",
+						"questions"
+					],
+					"query": [
+						{
+							"key": "s",
+							"value": "Java"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "http://localhost:8080/quiz-rest-services/rest/questions",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": " {\n        \"id\": 1,\n        \"content\": \"What is Java?\"\n }"
+				},
+				"url": {
+					"raw": "http://localhost:8080/quiz-rest-services/rest/questions",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"quiz-rest-services",
+						"rest",
+						"questions"
+					],
+					"query": [
+						{
+							"key": "",
+							"value": ""
+						}
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
