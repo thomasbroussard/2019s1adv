@@ -1,13 +1,16 @@
 package fr.epita.quiz.resources;
 
-import java.util.Arrays;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
 
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
-
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import javax.ws.rs.Produces;
+import javax.ws.rs.QueryParam;
+import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
 
 import fr.epita.quiz.datamodel.Question;
 
@@ -16,12 +19,16 @@ public class QuestionResource {
 
 	
 	@GET
-	public String getAllQuestions() throws JsonProcessingException{
+	@Path("/")
+	@Produces(value = { MediaType.APPLICATION_JSON })
+	public Response findAllQuestions(@QueryParam("s") String inputString) {
+		
+		List<Question> messages = new ArrayList<Question>();
 		Question question = new Question();
-		question.setContent("What is Maven?");
-		ObjectMapper objectMapper = new ObjectMapper();
-		String listAsJSON = objectMapper.writer().writeValueAsString(Arrays.asList(question));
-		return listAsJSON;
+		question.setContent("What is Java?");
+		messages.add(question);
+		
+		return Response.ok(messages).build();
 	}
 	
 	
