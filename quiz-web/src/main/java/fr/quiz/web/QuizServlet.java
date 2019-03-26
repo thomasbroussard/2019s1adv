@@ -40,9 +40,9 @@ public class QuizServlet extends HttpServlet {
 		
 		Question criteria = new Question();
 		criteria.setContent("");
-		ObjectMapper objectMapper = new ObjectMapper();
-
 		List<Question> list = questionDAO.search(criteria);
+		
+		ObjectMapper objectMapper = new ObjectMapper();
 		String listAsJSON = objectMapper.writer().writeValueAsString(list);
 		resp.getWriter().println(listAsJSON);
 	}
